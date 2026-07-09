@@ -1,50 +1,71 @@
 # agent-bob
 
-Personal collection of [Claude Code](https://claude.com/claude-code) skills. A skill is a `SKILL.md` file (plus optional reference docs and scripts) that Claude Code reads automatically when a request matches its description, so it applies the guidance below without being asked to load it explicitly.
+Personal workspace for writing-assistant assets used with Claude Code and GitHub Copilot.
 
-## Skills
+This repository currently contains:
 
-| Skill | Triggers on | What it does |
-|---|---|---|
-| [`humanize-writing/`](humanize-writing/) | Any substantive writing task (emails, posts, docs, PR descriptions, essays...) | Actively avoids generic "AI-sounding" tells -- overused vocabulary, boilerplate phrases, robotic sentence rhythm, formulaic structure. |
-| [`write-like-bob/`](write-like-bob/) | Requests for a blog post, dev.to article, or write-up meant to sound like Bob Fornal | Reproduces Bob's actual writing voice, built from reading all 121 of his published [dev.to](https://dev.to/rfornal) articles. |
+- `claude/`: skill packages and references for Claude Code.
+- `copilot/`: persistent memory notes used to steer Copilot behavior.
 
-Also included: [`write-like-bob.skill`](write-like-bob.skill) -- a packaged, portable copy of the
-`write-like-bob` skill for installing elsewhere without cloning this repo.
+## Repository Layout
 
-## Installation
-
-Claude Code loads skills from `~/.claude/skills/<skill-name>/` (personal, all projects) or
-`.claude/skills/<skill-name>/` (a single project). To install one of these:
-
-```bash
-cp -r humanize-writing ~/.claude/skills/
-cp -r write-like-bob ~/.claude/skills/
+```text
+claude/
+  README.md
+  write-like-bob.skill
+  humanize-writing/
+    SKILL.md
+    evals/
+      evals.json
+    references/
+      signs-of-ai-writing.md
+    scripts/
+      check_ai_tells.py
+  write-like-bob/
+    SKILL.md
+    references/
+      voice-notes.md
+copilot/
+  persistent-memory.md
 ```
 
-Or drag the `.skill` file into Claude Code / claude.ai when prompted to save a skill.
+## Claude Skills
 
-Once installed, no manual invocation is needed -- each skill's `description` frontmatter tells Claude Code when to use it, and it applies automatically on a matching request.
+### `humanize-writing`
 
----
+Use for substantive prose where the output should read naturally and avoid common AI-writing tells.
 
-## `humanize-writing`
+- Main guide: `claude/humanize-writing/SKILL.md`
+- Deep reference: `claude/humanize-writing/references/signs-of-ai-writing.md`
+- Optional checker: `python claude/humanize-writing/scripts/check_ai_tells.py <path-to-draft>`
 
-Every commonly-cited "sign of AI writing" -- Wikipedia's own [[igns of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing) guideline, journalism on the topic (Rolling Stone, Reuters Institute, NPR, Washington Post), NLP/stylometric research, and detection-tool writeups -- converges on the same short list of tells: a cluster of overused vocabulary (`delve`, `tapestry`, `robust`, `leverage`...), boilerplate phrases ("it's important to note," "in today's fast-paced world"), suspiciously uniform sentence rhythm, and a handful of formulaic structural moves (rule-of-three lists, a canned "challenges and future outlook" section). None of these individually proves anything -- the research is unanimous that no single word or habit is a reliable tell on its own, and reflexively stripping something like every em dash can itself read as stilted. What actually reads as generic is leaning on the whole cluster of defaults at once instead of making real choices.
+### `write-like-bob`
 
-**Contents:**
-- `SKILL.md` -- the checklist-driven workflow: write normally first, then pass the draft against a   vocabulary/phrase/rhythm/structure/specificity checklist before delivering.
-- `references/signs-of-ai-writing.md` -- the exhaustive word/phrase/pattern list, the em-dash caveat   (that specific "tell" is the most viral and the most overstated -- see the sourcing inside), and full citations.
-- `scripts/check_ai_tells.py` -- an objective scanner for banned vocabulary/phrase hits, em-dash rate, and a sentence-length "burstiness ratio" (stdev / average -- low means suspiciously uniform rhythm). Run it against a draft for a second opinion:
-  ```bash
-  python scripts/check_ai_tells.py path/to/draft.txt
-  ```
-- `evals/evals.json` -- test prompts and objective assertions used to validate the skill.
+Use when drafting content in Bob Fornal's established writing voice (for example dev.to posts and technical write-ups).
 
-## `write-like-bob`
+- Main guide: `claude/write-like-bob/SKILL.md`
+- Voice evidence notes: `claude/write-like-bob/references/voice-notes.md`
+- Portable package: `claude/write-like-bob.skill`
 
-A voice profile built by reading all 121 articles at [dev.to/rfornal](https://dev.to/rfornal) (2019-2026, ~95,000 words), analyzed in five independent chronological passes and cross-checked for patterns that held steady across all seven years -- not just a couple of articles. The result is a distinctive, well-evidenced voice: short declarative sentences, an ellipsis used as a mid-sentence pause rather than just a trail-off, sentence-openers like "So,"/"Then,"/"Basically,"/"Now,", a Problem &rarr; Attempt &rarr; Failure &rarr; Resolution arc, bold-italic (`***word***`) for emphasis, a closing Summary/Conclusion that echoes the opening almost verbatim, and a self-deprecating, first-person voice that frames technical facts as personal experience.
+For additional details on installation and usage, see `claude/README.md`.
 
-**Contents:**
-- `SKILL.md` -- the operational guide: how to open, how to build sentences, how to structure a piece, how to handle emphasis and voice, plus a worked before/after example.
-- `references/voice-notes.md` -- the full evidence behind every rule in `SKILL.md`, organized the same way (sentence habits, structure, recurring phrases, tone, punctuation), with direct quotes and source article filenames for each pattern.
+## Copilot Memory
+
+The `copilot/persistent-memory.md` file stores durable guidance that can be reused across sessions.
+
+Current themes include:
+
+- Cloudflare preference (Worker Script API over Cloudflare APIs)
+- Angular defaults (separation of concerns, LTS, Angular Material)
+- Backend-first implementation preference when appropriate
+- Angular TS6+ `rootDir` requirements when `outDir` is set
+- Hash-tag URL notation for Angular apps hosted on Cloudflare
+
+See `copilot/README.md` for maintenance guidelines.
+
+## Maintenance
+
+- Keep `SKILL.md` files focused on trigger conditions and operating rules.
+- Put evidence, examples, and long explanations under each skill's `references/` folder.
+- Keep `copilot/persistent-memory.md` concise, factual, and stable.
+- Update this root README when folders are added, removed, or renamed.
