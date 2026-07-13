@@ -4,7 +4,7 @@ Personal workspace for writing-assistant assets used with Claude Code and GitHub
 
 This repository currently contains:
 
-- `claude/`: skill packages and references for Claude Code.
+- `claude/`: skill packages, subagent definitions, and references for Claude Code.
 - `copilot/`: persistent memory notes used to steer Copilot behavior.
 
 ## Repository Layout
@@ -13,6 +13,8 @@ This repository currently contains:
 claude/
   README.md
   write-like-bob.skill
+  agents/
+    socratic-tutor.md
   humanize-writing/
     SKILL.md
     evals/
@@ -48,6 +50,22 @@ Use when drafting content in Bob Fornal's established writing voice (for example
 - Portable package: `claude/write-like-bob.skill`
 
 For additional details on installation and usage, see `claude/README.md`.
+
+## Claude Subagents
+
+Unlike skills (which apply automatically when a request matches), subagents are invoked by name via Claude Code's Agent tool or Task delegation.
+
+### `socratic-tutor`
+
+Given a document and the correct answers/derivations, runs a Socratic dialogue that leads the student to the answer through questions rather than direct instruction, allows genuine counter-argument, and closes with a written assessment of understanding depth and session effectiveness.
+
+- Definition: `claude/agents/socratic-tutor.md`
+
+Install by copying into `~/.claude/agents/` (all projects) or `.claude/agents/` (a single project):
+
+```bash
+cp claude/agents/socratic-tutor.md ~/.claude/agents/
+```
 
 ## Copilot Memory
 

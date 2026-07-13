@@ -12,6 +12,17 @@ Personal collection of [Claude Code](https://claude.com/claude-code) skills. A s
 Also included: [`write-like-bob.skill`](write-like-bob.skill) -- a packaged, portable copy of the
 `write-like-bob` skill for installing elsewhere without cloning this repo.
 
+## Subagents
+
+| Agent | Triggers on | What it does |
+|---|---|---|
+| [`agents/socratic-tutor.md`](agents/socratic-tutor.md) | Requests to be quizzed or tutored Socratically on a document | Given a document plus the correct answers/derivations, runs a guided Socratic dialogue -- questions instead of lectures, real room for counter-argument, and a closing assessment of depth of understanding and session effectiveness. |
+
+Subagents are a different Claude Code primitive from skills: skills apply themselves
+automatically when a request matches their `description`; subagents run in an isolated
+context and are invoked deliberately (via the Agent/Task tool, or by name), with their own
+restricted toolset and system prompt.
+
 ## Installation
 
 Claude Code loads skills from `~/.claude/skills/<skill-name>/` (personal, all projects) or
@@ -25,6 +36,13 @@ cp -r write-like-bob ~/.claude/skills/
 Or drag the `.skill` file into Claude Code / claude.ai when prompted to save a skill.
 
 Once installed, no manual invocation is needed -- each skill's `description` frontmatter tells Claude Code when to use it, and it applies automatically on a matching request.
+
+Claude Code loads subagents from `~/.claude/agents/<name>.md` (personal, all projects) or
+`.claude/agents/<name>.md` (a single project). To install:
+
+```bash
+cp agents/socratic-tutor.md ~/.claude/agents/
+```
 
 ---
 
