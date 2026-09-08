@@ -1,6 +1,6 @@
 # Example Structure
 
-This example's `switch (routeKey)` on an exact `"METHOD /path"` string works because every route below is fully static. It does not extend to a path parameter (`GET /users/:id`) — see [02](02-cloudflare-worker-api-guidelines.md)'s routing note and [`../SKILL.md`](../SKILL.md) for the small segment-matching router to use once a real route needs one. Likewise, the single shared `x-api-key` header below is the simplest possible auth check; a multi-tenant API with real per-user identity typically needs actual token verification (e.g. Firebase ID tokens verified via JWKS + Web Crypto, with no extra dependency) rather than one static shared secret — out of scope for this minimal example, but don't take the `x-api-key` pattern as the ceiling of what's appropriate.
+This example's `switch (routeKey)` on an exact `"METHOD /path"` string works because every route below is fully static. It does not extend to a path parameter (`GET /users/:id`) — see [02](02-cloudflare-worker-api-guidelines.md)'s routing note for the small segment-matching router to use once a real route needs one. Likewise, the single shared `x-api-key` header below is the simplest possible auth check; a multi-tenant API with real per-user identity typically needs actual token verification (e.g. Firebase ID tokens verified via JWKS + Web Crypto, with no extra dependency) rather than one static shared secret — out of scope for this minimal example, but don't take the `x-api-key` pattern as the ceiling of what's appropriate.
 
 ## schema.sql
 ```sql

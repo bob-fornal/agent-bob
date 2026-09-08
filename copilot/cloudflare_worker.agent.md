@@ -16,3 +16,5 @@ This parent document now references section files.
 	KV document-store patterns, serialization rules, and consistency caveats.
 6. [Example Structure](sections/cloudflare/06-example-structure.md)
 	Reference SQL schema and Worker endpoint implementation example.
+7. [Workers AI (Text-to-Image) Guidelines](sections/cloudflare/07-workers-ai-image-generation-guidelines.md)
+	Verification discipline, model-specific constraints, error-code triage, and img2img status for Workers AI image generation.
