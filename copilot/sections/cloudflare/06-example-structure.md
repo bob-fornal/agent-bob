@@ -1,5 +1,7 @@
 # Example Structure
 
+This example's `switch (routeKey)` on an exact `"METHOD /path"` string works because every route below is fully static. It does not extend to a path parameter (`GET /users/:id`) — see [02](02-cloudflare-worker-api-guidelines.md)'s routing note and [`../SKILL.md`](../SKILL.md) for the small segment-matching router to use once a real route needs one. Likewise, the single shared `x-api-key` header below is the simplest possible auth check; a multi-tenant API with real per-user identity typically needs actual token verification (e.g. Firebase ID tokens verified via JWKS + Web Crypto, with no extra dependency) rather than one static shared secret — out of scope for this minimal example, but don't take the `x-api-key` pattern as the ceiling of what's appropriate.
+
 ## schema.sql
 ```sql
 DROP TABLE IF EXISTS users;
@@ -104,7 +106,13 @@ export async function processPost(request: Request, env: Env): Promise<Response>
 
     return Response.json({ success: true, id: info.meta.last_row_id }, { status: 201 });
   } catch (e: any) {
-    // Handle unique constraint failures, etc.
+    // Distinguish an expected conflict (409, not a bug) from a real failure
+    // (500, worth logging) — a blanket 500 here would hide the difference
+    // between "this email is already taken" and an actual database problem.
+    if (typeof e?.message === "string" && /UNIQUE constraint failed/i.test(e.message)) {
+      return Response.json({ error: "Email already registered" }, { status: 409 });
+    }
+    console.error("Failed to create user:", e);
     return Response.json({ error: "Failed to create user" }, { status: 500 });
   }
 }
