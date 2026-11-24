@@ -7,7 +7,8 @@ This folder contains persistent guidance used by GitHub Copilot in this workspac
 - `persistent-memory.md`: durable preferences and implementation defaults that should remain stable across tasks.
 - `cloudflare_worker.agent.md`: parent instructions for Cloudflare Worker and D1 work; links to sectioned guidance in `sections/cloudflare/`.
 - `typescript_linting.agent.md`: parent instructions for TypeScript linting and style enforcement; links to sectioned guidance in `sections/ts-lint/`.
-- `sections/`: modular instruction content referenced by agent files (Cloudflare and TypeScript linting).
+- `update-pr.agent.md`: PR update agent; links to the merge, verification, and push workflow in `sections/pr-update/`. Defaults to `main`; include `main=develop` in the agent request to use `develop` instead.
+- `sections/`: modular instruction content referenced by agent files.
 
 ## Purpose
 
@@ -21,6 +22,9 @@ Use `persistent-memory.md` to capture high-value defaults that improve consisten
 Keep entries short and specific so they are easy to apply and maintain.
 
 Use the `*.agent.md` files to define task-focused operating instructions that can be split into reusable section files under `sections/`.
+
+To install the PR update agent in another repository, copy `update-pr.agent.md` to its `.github/agents/` directory and copy `sections/pr-update/` to `.github/agents/sections/pr-update/` so the workflow link remains valid.
+For its optional test-discovery helper, see the [installation and usage instructions](../README.md#update-pr).
 
 ## Update Guidelines
 
