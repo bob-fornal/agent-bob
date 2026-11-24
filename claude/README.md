@@ -17,6 +17,7 @@ Also included: [`write-like-bob.skill`](write-like-bob.skill) -- a packaged, por
 | Agent | Triggers on | What it does |
 |---|---|---|
 | [`agents/socratic-tutor.md`](agents/socratic-tutor.md) | Requests to be quizzed or tutored Socratically on a document | Given a document plus the correct answers/derivations, runs a guided Socratic dialogue -- questions instead of lectures, real room for counter-argument, and a closing assessment of depth of understanding and session effectiveness. |
+| [`agents/update-pr.md`](agents/update-pr.md) | Requests to update a PR branch from `main` or a specified source branch | Merges the source branch, resolves conflicts, tests changed code and fixes integration issues, and pushes the verified result to the PR. Include `main=develop` in the agent request to use `develop` instead of `main`. |
 
 Subagents are a different Claude Code primitive from skills: skills apply themselves
 automatically when a request matches their `description`; subagents run in an isolated
@@ -42,7 +43,10 @@ Claude Code loads subagents from `~/.claude/agents/<name>.md` (personal, all pro
 
 ```bash
 cp agents/socratic-tutor.md ~/.claude/agents/
+cp agents/update-pr.md ~/.claude/agents/
 ```
+
+For the optional test-discovery helper used by `update-pr`, see the [installation and usage instructions](../README.md#update-pr).
 
 ---
 

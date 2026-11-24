@@ -5,7 +5,7 @@ Personal workspace for writing-assistant assets used with Claude Code and GitHub
 This repository currently contains:
 
 - `claude/`: skill packages, subagent definitions, and references for Claude Code.
-- `copilot/`: persistent memory notes used to steer Copilot behavior.
+- `copilot/`: Copilot agent instructions and persistent memory notes.
 
 ## Repository Layout
 
@@ -15,6 +15,7 @@ claude/
   write-like-bob.skill
   agents/
     socratic-tutor.md
+    update-pr.md
   humanize-writing/
     SKILL.md
     evals/
@@ -28,7 +29,11 @@ claude/
     references/
       voice-notes.md
 copilot/
+  update-pr.agent.md
+  sections/pr-update/01-workflow.md
   persistent-memory.md
+tools/
+  find_related_tests.py
 ```
 
 ## Claude Skills
@@ -66,6 +71,28 @@ Install by copying into `~/.claude/agents/` (all projects) or `.claude/agents/` 
 ```bash
 cp claude/agents/socratic-tutor.md ~/.claude/agents/
 ```
+
+### `update-pr`
+
+Merges `main` into a PR branch, resolves conflicts, tests changed code and fixes integration issues, then commits and pushes the result. Include `main=develop` in the agent request to use `develop` instead, or set `main=<branch>` to another source branch.
+
+- Claude definition: `claude/agents/update-pr.md`
+- Copilot definition: `copilot/update-pr.agent.md` (with its linked `sections/pr-update/` workflow)
+
+The optional test-discovery helper uses Python 3 and Git. Install it where both agents can find it:
+
+```bash
+mkdir -p ~/.local/share/agent-bob
+cp tools/find_related_tests.py ~/.local/share/agent-bob/
+```
+
+Record the PR head commit before the merge, then run the helper from the target repository after resolving and staging conflicts:
+
+```bash
+python3 ~/.local/share/agent-bob/find_related_tests.py --base <fetched-pr-base-ref> --before-merge <pre-merge-pr-head-commit>
+```
+
+It reports changed files, changed tests, and filename-based test candidates as JSON. It includes staged, unstaged, and untracked files; unrelated changes must be handled before the merge. Filename matches cannot identify all affected tests, especially indirect dependencies or shared configuration, so use the project's test-selection tools or coverage data and run a broader suite when needed. The helper does not run tests.
 
 ## Copilot Memory
 
